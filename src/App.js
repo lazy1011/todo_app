@@ -24,6 +24,8 @@ import { useHotkeys, useLocalStorage } from '@mantine/hooks';
 export default function App() {
 	const [tasks, setTasks] = useState([]);
 	const [opened, setOpened] = useState(false);
+	const [name, setName] = useState('')
+	const [summary, setSummary] = useState('')
 
 	const preferredColorScheme = useColorScheme();
 	const [colorScheme, setColorScheme] = useLocalStorage({
@@ -40,21 +42,24 @@ export default function App() {
 	const taskSummary = useRef('');
 
 	function createTask() {
+		
 		setTasks([
 			...tasks,
 			{
-				title: taskTitle.current.value,
-				summary: taskSummary.current.value,
+				title: name,
+				summary: summary,
 			},
 		]);
 
 		saveTasks([
 			...tasks,
 			{
-				title: taskTitle.current.value,
-				summary: taskSummary.current.value,
+				title: name,
+				summary: summary,
 			},
 		]);
+		setName('')
+		setSummary('')
 	}
 
 	function deleteTask(index) {
@@ -106,6 +111,8 @@ export default function App() {
 						<TextInput
 							mt={'md'}
 							ref={taskTitle}
+							value={name}
+							onChange={(e)=>{setName(e.target.value)}}
 							placeholder={'Task Title'}
 							required
 							label={'Title'}
@@ -115,11 +122,15 @@ export default function App() {
 							mt={'md'}
 							placeholder={'Task Summary'}
 							label={'Summary'}
+							value ={summary}
+							onChange={(e)=>{setSummary(e.target.value)}}
 						/>
 						<Group mt={'md'} position={'apart'}>
 							<Button
 								onClick={() => {
 									setOpened(false);
+									setName('')
+									setSummary('')
 								}}
 								variant={'subtle'}>
 								Cancel
